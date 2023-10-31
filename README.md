@@ -72,3 +72,22 @@ dsqgen \
 -DIALECT netezza \
 -OUTPUT_DIR /tmp
 ```
+
+### Used in this project
+```bash
+# Queries
+./dsqgen \                                                 
+  -DIRECTORY ../query_templates \
+  -INPUT ../query_templates/templates.lst \
+  -VERBOSE Y \
+  -QUALIFY Y \
+  -SCALE 4 \
+  -DIALECT netezza \
+  -OUTPUT_DIR ../tmp/queries
+
+# Tables
+./dsdgen \                                                 
+  -dir ../tmp/tables \
+  -scale 5 \
+  -force Y
+```
