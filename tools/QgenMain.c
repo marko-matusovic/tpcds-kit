@@ -263,25 +263,6 @@ generateQueryStreams(void)
 		Streams[1].nSeed = 19620718;
 		pPermutation = makePermutation(pPermutation, nQueryCount, 1);
 	
-		sprintf(szPath, "%s%squery_%d.sql",
-			get_str("OUTPUT_DIR"),
-			get_str("PATH_SEP"),
-			nStream);
-		if (!is_set("FILTER"))
-		{
-#ifndef WIN32
-			if ((pOutFile = fopen(szPath, "w")) == NULL)
-#else
-				if ((pOutFile = fopen(szPath, "wt")) == NULL)
-#endif
-				{
-					SetErrorGlobals(szPath, NULL);
-					ReportErrorNoLine(QERR_OPEN_FAILED, szPath, 1);
-				}
-		}
-		else
-			pOutFile = stdout;
-
 		g_nStreamNumber = nStream;
 		if (pLogFile)
 			fprintf(pLogFile, "BEGIN STREAM %d\n", nStream);
@@ -289,6 +270,27 @@ generateQueryStreams(void)
 		{
 			for (nCount = 1; nCount <= nVersionCount; nCount++)
 			{
+
+			sprintf(szPath, "%s%squery_%d_v%d.sql",
+				get_str("OUTPUT_DIR"),
+				get_str("PATH_SEP"),
+				nQuery,
+				nCount);
+			if (!is_set("FILTER"))
+				{
+#ifndef WIN32
+				if ((pOutFile = fopen(szPath, "w")) == NULL)
+#else
+				if ((pOutFile = fopen(szPath, "wt")) == NULL)
+#endif
+					{
+						SetErrorGlobals(szPath, NULL);
+						ReportErrorNoLine(QERR_OPEN_FAILED, szPath, 1);
+					}
+				}
+			else
+				pOutFile = stdout;
+
 			g_nQueryNumber = nQuery;
 			if (is_set("QUALIFY"))
 				nQID = nQuery;
@@ -298,12 +300,12 @@ generateQueryStreams(void)
 			if (pLogFile)
 				fprintf(pLogFile, "\n");
 			}
+			if (!is_set("FILTER"))
+			fclose(pOutFile);
 		}
 		if (pLogFile)
 			fprintf(pLogFile, "END STREAM %d\n", nStream);
 
-		if (!is_set("FILTER"))
-			fclose(pOutFile);
 	}
 
 	if (pLogFile)
@@ -372,4 +374,3 @@ main(int ac, char* av[])
 
 }
 		
-
