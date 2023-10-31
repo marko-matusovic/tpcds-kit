@@ -36,6 +36,7 @@ dsdgen
 checksum
 .ctags_updated
 tags
+tmp
 
 # Flat files
 *.dat
