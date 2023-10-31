@@ -35,3 +35,4 @@
 define __LIMITA = "";
 define __LIMITB = "";
 define __LIMITC = " fetch first %d rows only";
+define _END="";
